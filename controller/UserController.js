@@ -83,10 +83,73 @@ let allUsers = async (req, res) => {
     })
 }
 
+
+let middlewareGetUser = (req, res, next) => {
+    let { id } = req.body
+    console.log('mw check', { id });
+    let user = usersArr.filter(u => u.id === Number(id))
+    user = user ? user[0] : null
+    if (user) {
+        return res.status(400).json({
+            message: 'user did not exist, can not get',
+            result: false
+        })
+    } else {
+        next()
+    }
+}
+let middlewareGetAll = (req, res, next) => {
+    if (true) {
+        next()
+    } else {
+        next()
+    }
+}
+let middlewareIsExist = (req, res, next) => {
+    if (false) {
+        next()
+    } else {
+        next()
+    }
+}
+let middlewareCheckExist = (req, res, next) => {
+    let { age, name } = req.body
+    console.log('mw check', { age, name });
+    let user = usersArr.filter(u => u.age === Number(age) && u.name === name)
+    user = user ? user[0] : null
+    if (user) {
+        return res.status(400).json({
+            message: 'user exist, can not add',
+            result: false
+        })
+    } else {
+        next()
+    }
+}
+let middlewareDelete = (req, res, next) => {
+    console.log('mw check', { id: req.body.id });
+    let user = usersArr.filter(u => u.id === Number(req.body.id))
+    user = user ? user[0] : null
+    if (user) {
+        return res.status(400).json({
+            message: 'user did not exist, can not delete',
+            result: false
+        })
+    } else {
+        next()
+    }
+}
+
+
 module.exports = {
     check,
     getUserById,
     newUser,
+    middlewareCheckExist,
+    middlewareGetUser,
+    middlewareGetAll,
+    middlewareIsExist,
+    middlewareDelete,
     allUsers,
     isExist,
     deleteUser
